@@ -1,0 +1,19 @@
+chercher:
+
+function chercherFrais(Request $request) {
+        if(session('visiteur')!= null){ //Sans la session l’insertion du sommaire
+            $visiteur = session('visiteur'); //provoque une erreur
+           // dd($visiteur);
+            $lesMois = PdoGsb::getAllMonths();
+            $lesVisiteurs = PdoGsb::getAllVisiteurs();
+            $lesRembourses = PdoGsb::getListNonRembourse($request['lstVisiteurs'], $request['lstMois']);
+            $lesCles = array_keys($lesMois);
+            $moisASelectionner = $lesCles[0];
+            return view('listemoisCForm')
+                        ->with('lesMois', $lesMois)
+                        ->with('leMois', $moisASelectionner)
+                        ->with('lesVisiteurs',$lesVisiteurs)
+                        ->with('lesRembourses',$lesRembourses)
+                        ->with('visiteur',$visiteur);
+        }
+    }
